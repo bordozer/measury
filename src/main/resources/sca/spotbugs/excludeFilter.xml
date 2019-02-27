@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<FindBugsFilter>
+
+    <!-- Suppress outlined warnings for tests classes -->
+    <Match>
+        <Class name="~.*\.*Test" />
+        <Bug pattern="
+            NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+            UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+            FCBL_FIELD_COULD_BE_LOCAL
+         " />
+    </Match>
+
+    <!-- Suppress outlined warnings for jpa generated classes -->
+    <Match>
+        <Class name="~.*\.*_" />
+        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD" />
+    </Match>
+    <Match>
+        <Class name="~.*\.*_" />
+        <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
+    </Match>
+
+    <!-- SpotBugs suppressions -->
+    <!-- Justification: aligned with proffered code style -->
+    <Match>
+        <Bug pattern="FII_COMBINE_FILTERS" />
+    </Match>
+    <!-- Justification: false positive results -->
+    <Match>
+        <Bug pattern="FII_USE_FUNCTION_IDENTITY" />
+    </Match>
+    <!-- Class does not implement a toString method -->
+    <!-- Justification: We don't need toString for some typical classes
+            having instance members(for instance @Configuration) -->
+    <Match>
+        <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING" />
+    </Match>
+    <!-- This method is declared more permissively than is used in the code base -->
+    <!-- Justification: public methods could be used from the other codebases -->
+    <Match>
+        <Bug pattern="OPM_OVERLY_PERMISSIVE_METHOD" />
+    </Match>
+    <!-- JUnit test method appears to have no assertions -->
+    <!-- Justification: we don't use JUnit assertions -->
+    <Match>
+        <Bug pattern="UTAO_JUNIT_ASSERTION_ODDITIES_NO_ASSERT" />
+    </Match>
+    <!-- JUnit test method uses Java asserts rather than a JUnit assertion -->
+    <!-- Justification: we don't use JUnit assertions, and we want to fix nulllability issues with Java asserts -->
+    <Match>
+        <Bug pattern="UTAO_JUNIT_ASSERTION_ODDITIES_ASSERT_USED" />
+    </Match>
+    <!-- Method stores return result in local before immediately returning it -->
+    <!-- Justification: fails for @Data hashCode() -->
+    <Match>
+        <Bug pattern="USBR_UNNECESSARY_STORE_BEFORE_RETURN" />
+    </Match>
+    <!-- Suppress this due to skip errors in generated mappers -->
+    <Match>
+        <Bug pattern="AI_ANNOTATION_ISSUES_NEEDS_NULLABLE" />
+    </Match>
+    <!-- This method makes extensive use of methods from another class over methods of its own class -->
+    <!-- Justification: Generates too many weird violations(factories, builders, mappers) -->
+    <Match>
+        <Bug pattern="CE_CLASS_ENVY" />
+    </Match>
+
+    <!-- Suppress this due to skip errors of creating bean in tests -->
+    <Match>
+        <Class name="~.*\.*Test" />
+        <Bug pattern="WI_MANUALLY_ALLOCATING_AN_AUTOWIRED_BEAN" />
+    </Match>
+
+    <Match>
+        <Package name="~.*\.generated.*" />
+    </Match>
+
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP" />
+    </Match>
+
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+
+</FindBugsFilter>
