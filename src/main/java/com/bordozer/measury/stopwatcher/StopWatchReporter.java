@@ -61,7 +61,7 @@ final class StopWatchReporter {
         list.add(headerColumns);
         list.add(headerSeparator);
         list.addAll(rows);
-        final String report = String.join("\r\n", list);
+        final String report = String.join(System.lineSeparator(), list);
 
         LOGGER.debug("Stopwatcher's report for key '{}' has been generated: \n", key);
 
