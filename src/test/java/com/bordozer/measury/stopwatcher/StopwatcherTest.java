@@ -1,13 +1,6 @@
 package com.bordozer.measury.stopwatcher;
 
-import com.bordozer.commons.utils.FileUtils;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -18,7 +11,14 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import com.bordozer.commons.utils.FileUtils;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SuppressWarnings("PMD.TooManyMethods")
@@ -78,7 +78,7 @@ class StopwatcherTest {
         // when
 
         // then
-        Assertions.assertThat(stopwatcher.getCheckpoints()).isNotNull().hasSize(0);
+        assertThat(stopwatcher.getCheckpoints()).isNotNull().hasSize(0);
         assertThat(stopwatcher.getCurrentIndent()).isEqualTo(0);
     }
 

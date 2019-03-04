@@ -87,4 +87,7 @@ checkstyleMain {
 pmdMain {
     source = scaSource
 }
+tasks.withType(Checkstyle) { task -> enabled = true }
+tasks.withType(Pmd) { task -> enabled = true }
+spotbugsMain.enabled = true
 /* SCA <-- */
