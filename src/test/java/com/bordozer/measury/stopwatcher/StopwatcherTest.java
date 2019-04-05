@@ -1,6 +1,11 @@
 package com.bordozer.measury.stopwatcher;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.bordozer.commons.utils.FileUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -11,14 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import com.bordozer.commons.utils.FileUtils;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SuppressWarnings("PMD.TooManyMethods")
@@ -60,9 +58,7 @@ class StopwatcherTest {
         // when
         SW_MT.measure("Multiple thread flow", this::executeFutures);
         SW_MT.measure("Multiple thread flow", this::executeCallable);
-//        SW_MT.measure("Multiple thread afterlife", () -> waifFor(5000));
 
-        // then
         // then
         final String report = SW_MT.buildReportSecs();
         assertThat(report).isNotNull();
@@ -127,32 +123,16 @@ class StopwatcherTest {
         return futures.stream()
                 .map(future -> {
                     try {
-//                        waifFor(2000);
                         return future.get();
                     } catch (final InterruptedException | ExecutionException ex) {
                         return "ERROR";
                     }
                 })
                 .collect(Collectors.toList());
-        /*return futures.stream()
-                .map(future -> SW_MT.measureAndReturn("Calling a future", () -> {
-                    Executors.newCachedThreadPool().submit(() -> {
-                        waifFor(2000);
-                        future.complete("Hello");
-
-                    });
-                    try {
-                        return future.get();
-                    } catch (final Exception ex) {
-                        return "ERROR";
-                    }
-                }))
-                .collect(Collectors.toList());*/
     }
 
     private CompletableFuture<String> createFuture(final int number) {
         return CompletableFuture.supplyAsync(() -> doTask(number));
-//        return CompletableFuture.completedFuture(doTask(number));
     }
 
     private String doTask(final int number) {
