@@ -9,7 +9,7 @@ import java.util.concurrent.locks.StampedLock;
 
 public final class StopwatchManager {
 
-    private static final String SINGLETON_WATCHER = "SINGLETON_WATCHER";
+    public static final String SINGLETON_WATCHER = "sw";
     private static final List<Stopwatcher> WATCHERS = new ArrayList<>();
 
     private StopwatchManager() {
