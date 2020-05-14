@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.CheckForNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,9 @@ import java.util.concurrent.TimeUnit;
 @Setter
 public final class Stopwatcher {
 
-    private String key;
+    private final String key;
+    @CheckForNull
+    private String reportName;
 
     private final List<CheckPoint> checkpoints = new ArrayList<>();
     private int currentIndent;
@@ -63,11 +66,11 @@ public final class Stopwatcher {
     }
 
     public String buildReportMills() {
-        return StopWatchReporter.buildReportMills(key, checkpoints);
+        return StopWatchReporter.buildReportMills(key, reportName, checkpoints);
     }
 
     public String buildReportSecs() {
-        return StopWatchReporter.buildReportSecs(key, checkpoints);
+        return StopWatchReporter.buildReportSecs(key, reportName, checkpoints);
     }
 
     public void logReportMills() {

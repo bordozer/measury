@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.CheckForNull;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Slf4j
 final class StopWatchReporter {
@@ -30,16 +32,16 @@ final class StopWatchReporter {
     private StopWatchReporter() {
     }
 
-    static String buildReportMills(final String key, final List<CheckPoint> checkPoints) {
-        return buildReport(key, checkPoints, ChronoUnit.MILLIS);
+    static String buildReportMills(final String key, @CheckForNull final String fileName, final List<CheckPoint> checkPoints) {
+        return buildReport(key, fileName, checkPoints, ChronoUnit.MILLIS);
     }
 
-    static String buildReportSecs(final String key, final List<CheckPoint> checkPoints) {
-        return buildReport(key, checkPoints, ChronoUnit.SECONDS);
+    static String buildReportSecs(final String key, @CheckForNull final String fileName, final List<CheckPoint> checkPoints) {
+        return buildReport(key, fileName, checkPoints, ChronoUnit.SECONDS);
     }
 
-    private static String buildReport(final String key, final List<CheckPoint> checkPoints, final ChronoUnit chronoUnit) {
-        final String headerTitle = String.format("Stopwatcher report for a key '%s'", key);
+    private static String buildReport(final String key, @CheckForNull final String fileName, final List<CheckPoint> checkPoints, final ChronoUnit chronoUnit) {
+        final String headerTitle = String.format("Stopwatcher report for a key '%s - %s'", key, fileName);
 
         final String headerSeparator = String.format("+ %s + %s + %s +",
                 StringUtils.repeat("-", REPORT_COLUMN_NAME_LENGTH),
@@ -65,18 +67,24 @@ final class StopWatchReporter {
 
         LOGGER.debug("Stopwatcher's report for key '{}' has been generated: \n", key);
 
-        writeReport(key, report);
+        writeReport(key, fileName, report);
 
         return report;
     }
 
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     @SneakyThrows
-    private static void writeReport(final String key, final String report) {
+    private static void writeReport(final String key, @CheckForNull final String fileName, final String report) {
         final File file = new File("./build/reports/measury/");
         file.mkdirs();
-        final String fileName = String.format("%s-%s", URLEncoder.encode(key, "UTF-8"), LocalDateTime.now().format(REPORT_FILE_NAME_FORMATTER));
-        final PrintWriter writer = new PrintWriter(String.format("%s/%s.txt", file.getAbsolutePath(), fileName), "UTF-8");
+
+        final StringBuilder builder = new StringBuilder(URLEncoder.encode(key, "UTF-8"));
+        if (isNotBlank(fileName)) {
+            builder.append('-').append(URLEncoder.encode(fileName, "UTF-8"));
+        }
+        builder.append('-').append(LocalDateTime.now().format(REPORT_FILE_NAME_FORMATTER));
+
+        final PrintWriter writer = new PrintWriter(String.format("%s/%s.txt", file.getAbsolutePath(), builder.toString()), "UTF-8");
         writer.println(report);
         writer.close();
     }

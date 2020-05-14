@@ -28,7 +28,7 @@ class StopWatchReporterTest {
         final List<CheckPoint> checkPoints = createCheckPointsMills();
 
         // when
-        final String report = StopWatchReporter.buildReportMills("A MILLS", checkPoints);
+        final String report = StopWatchReporter.buildReportMills("A MILLS", "name", checkPoints);
 
         // then
         assertThat(report).isNotNull();
@@ -41,7 +41,7 @@ class StopWatchReporterTest {
         final List<CheckPoint> checkPoints = createCheckPointsSecs();
 
         // when
-        final String report = StopWatchReporter.buildReportSecs("SECONDS", checkPoints);
+        final String report = StopWatchReporter.buildReportSecs("SECONDS", null, checkPoints);
 
         // then
         assertThat(report).isNotNull();
