@@ -32,7 +32,7 @@ class StopWatchReporterTest {
 
         // then
         assertThat(report).isNotNull();
-        assertThat(report).isEqualTo(EXPECTED_STOPWATCHER_MILLS_REPORT);
+        assertThat(srt(report)).isEqualTo(srt(EXPECTED_STOPWATCHER_MILLS_REPORT));
     }
 
     @Test
@@ -45,7 +45,11 @@ class StopWatchReporterTest {
 
         // then
         assertThat(report).isNotNull();
-        assertThat(report).isEqualTo(EXPECTED_STOPWATCHER_SECS_REPORT);
+        assertThat(srt(report)).isEqualTo(srt(EXPECTED_STOPWATCHER_SECS_REPORT));
+    }
+
+    private static String srt(final String str) {
+        return str.replace("\n", "").replace("\r", "");
     }
 
     private List<CheckPoint> createCheckPointsMills() {
