@@ -2,7 +2,7 @@ package com.bordozer.measury.stopwatcher;
 
 import com.google.common.base.Stopwatch;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -12,13 +12,17 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Getter
-@RequiredArgsConstructor
+@Setter
 public final class Stopwatcher {
 
-    private final String key;
+    private String key;
 
     private final List<CheckPoint> checkpoints = new ArrayList<>();
     private int currentIndent;
+
+    Stopwatcher(final String key) {
+        this.key = key;
+    }
 
     public Stopwatcher measure(final String name, final MeasurableVoid func) {
         measureAndReturn(name, () -> {
@@ -29,7 +33,7 @@ public final class Stopwatcher {
     }
 
     public <T> T measureAndReturn(final String name, final MeasurableFunc<T> func) {
-        LOGGER.info("Stopwatcher '{}' started measuring '{}' [{}]", key, name, getCurrentThreadName());
+        LOGGER.debug("Stopwatcher '{}' started measuring '{}' [{}]", key, name, getCurrentThreadName());
         final Stopwatch stopwatch = Stopwatch.createStarted();
 
         final long startedAt = stopwatch.elapsed(TimeUnit.MILLISECONDS);
@@ -42,7 +46,7 @@ public final class Stopwatcher {
 
         currentIndent--;
 
-        LOGGER.info("Stopwatcher '{}' finished measuring '{}' [{}]", key, name, getCurrentThreadName());
+        LOGGER.debug("Stopwatcher '{}' finished measuring '{}' [{}]", key, name, getCurrentThreadName());
 
         return result;
     }
@@ -67,11 +71,11 @@ public final class Stopwatcher {
     }
 
     public void logReportMills() {
-        LOGGER.info(buildReportMills());
+        LOGGER.debug(buildReportMills());
     }
 
     public void logReportSecs() {
-        LOGGER.info(buildReportSecs());
+        LOGGER.debug(buildReportSecs());
     }
 
     private CheckPoint findOrCreateCheckPoint(final String name) {

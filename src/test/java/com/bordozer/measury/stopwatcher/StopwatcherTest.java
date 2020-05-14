@@ -28,9 +28,9 @@ class StopwatcherTest {
     private static final String EXPECTED_STOPWATCHER_MULTIPLE_THREAD_REPORT =
             FileUtils.readSystemResource("tests/expected-stopwatcher-multiple-thread-report.txt");
 
-    private static final Stopwatcher SW1 = StopwatchManager.getInstance("KEY-1");
-    private static final Stopwatcher SW2 = StopwatchManager.getInstance("KEY-2");
-    private static final Stopwatcher SW_MT = StopwatchManager.getInstance("MULTIPLE-THREAD");
+    private static final Stopwatcher SW1 = StopwatchManager.instance("KEY-1");
+    private static final Stopwatcher SW2 = StopwatchManager.instance("KEY-2");
+    private static final Stopwatcher SW_MT = StopwatchManager.instance("MULTIPLE-THREAD");
 
     // Disabled due to milliseconds
     @Disabled

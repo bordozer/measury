@@ -11,7 +11,7 @@ class StopwatchManagerTest {
         // given
 
         // when
-        final Stopwatcher stopwatcher = StopwatchManager.getInstance("KEY1");
+        final Stopwatcher stopwatcher = StopwatchManager.instance("KEY1");
 
         // then
         assertThat(stopwatcher).isNotNull();
