@@ -78,11 +78,14 @@ final class StopWatchReporter {
         final File file = new File("./build/reports/measury/");
         file.mkdirs();
 
-        final StringBuilder builder = new StringBuilder(URLEncoder.encode(key, "UTF-8"));
+        final StringBuilder builder = new StringBuilder();
         if (isNotBlank(fileName)) {
-            builder.append('-').append(URLEncoder.encode(fileName, "UTF-8"));
+            builder.append(URLEncoder.encode(fileName, "UTF-8"));
+        } else {
+            builder.append(URLEncoder.encode(key, "UTF-8"))
+                    .append('-')
+                    .append(LocalDateTime.now().format(REPORT_FILE_NAME_FORMATTER));
         }
-        builder.append('-').append(LocalDateTime.now().format(REPORT_FILE_NAME_FORMATTER));
 
         final PrintWriter writer = new PrintWriter(String.format("%s/%s.txt", file.getAbsolutePath(), builder.toString()), "UTF-8");
         writer.println(report);
